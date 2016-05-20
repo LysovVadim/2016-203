@@ -3,8 +3,8 @@
 #include <iostream>
 int main ()
 {
-    int N=100,i,j,k;
-    double A[N][N],b[N],x[N],y, c[N],z[N];
+    int N=100,i,j;
+    double A[N][N],b[N],x[N], c[N],z[N];
 FILE *f;
 FILE *p;
 f=fopen("input.txt","r");
@@ -22,25 +22,20 @@ fscanf(f,"%d/n",&N);
         {
  fscanf(f,"%lf",&b[i]);
     }
-	//  прямой ход метода прогонки
+
 c[1]=-A[0][1]/A[0][0];
 z[1]=b[0]/A[0][0];
-
- for (i=1;i<N;i++)
+ for (i=1;i<N-1;i++)
     {
-    	c[i+1]=-A[i][i+1]/(A[i+1][i]*c[i]+A[i][i]);
-    	z[i+1]=(b[i]-A[i+1][i]*z[i])/(A[i+1][i]*c[i]+A[i][i]);
-    	
+    	c[i+1]=-A[i][i+1]/(A[i][i-1]*c[i]+A[i][i]);
+    	z[i+1]=(b[i]-A[i][i-1]*z[i])/(A[i][i-1]*c[i]+A[i][i]);
     }
-//Нахождение корней
 	x[N-1]=(b[N-1]-A[N-1][N-2]*z[N-1])/(A[N-1][N-1]+A[N-1][N-2]*c[N-1]);
-        
 		for(i=N-2;i>=0;i--)
         {
         	x[i]=c[i+1]*x[i+1]+z[i+1];
         }
 
-//Вывод матрицы в файл
     for(i=0;i<N;i++)
     {
      for(j=0;j<N;j++)
@@ -64,3 +59,4 @@ for(i=0;i<N;i++)
 fclose(f);
 fclose(p);
 }
+
